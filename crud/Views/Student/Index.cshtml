@@ -1,0 +1,62 @@
+﻿@*List type to fetch list of StudentDetails*@
+@model List<StudentDetails>
+
+@*dynamically changing title of webapp*@
+@{
+    ViewData["Title"] = "List of Students";
+}
+<a>Create</a>
+<h2>List of Students</h2>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Faculty
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Address
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @*Looping through StudentDetails table in database*@
+            @foreach (var item in Model)
+            {
+               <tr>
+                   <td>
+                       @item.Id
+                   </td>
+                   <td>
+                       @item.Name
+                   </td>
+                    <td>
+                        @item.faculty
+                    </td>
+                    <td>
+                        @item.Email
+                    </td>
+                    <td>
+                        @item.Address
+                    </td
+                    <td>
+                       <a>Edit</a>
+                       <a>Delete</a>
+                   </td>
+               </tr>
+            }
+        </tbody>
+    </table>
+</div>
