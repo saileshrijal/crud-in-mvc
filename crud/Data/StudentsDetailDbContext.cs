@@ -8,6 +8,6 @@ namespace crud.Data
         public StudentsDetailDbContext(DbContextOptions options): base(options){
         
         }
-        public DbSet<StudentDetails> StudentsDetails { get; set; } 
+        public DbSet<StudentDetails>? StudentsDetails { get; set; } 
     }
 }
