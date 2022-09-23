@@ -2,11 +2,12 @@
 
 @*dynamically changing title of webapp*@
 @{
-    ViewData["Title"] = "List of Students";
+    ViewData["Title"] = "Edit Student";
 }
-<h2>Add Student</h2>
+<h2>Edit Student</h2>
 <hr></hr>
-<form method="post" action="Add">
+<form method="post" action="Edit">
+    <input type="hidden" asp-for="Id"/>
     <div class="mb-3">
         <label for="" class="form-label">Name</label>
         <input type="text" class="form-control" asp-for="Name">

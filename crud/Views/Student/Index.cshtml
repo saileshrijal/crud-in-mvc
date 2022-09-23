@@ -5,7 +5,7 @@
 @{
     ViewData["Title"] = "List of Students";
 }
-<a>Create</a>
+<a asp-action="Add Student" class="btn btn-success">Create</a>
 <h2>List of Students</h2>
 <div>
     <table class="table">
@@ -50,10 +50,10 @@
                     </td>
                     <td>
                         @item.Address
-                    </td
+                    </td>
                     <td>
-                       <a>Edit</a>
-                       <a>Delete</a>
+                       <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn btn-info" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                    </td>
                </tr>
             }

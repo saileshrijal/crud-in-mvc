@@ -1,6 +1,8 @@
 ﻿using crud.Data;
 using crud.Models;
+using crud.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace crud.Controllers
 {
@@ -27,7 +29,7 @@ namespace crud.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddStudentViewModel addStudentRequest) {
+        public async Task<IActionResult> Add(StudentViewModel addStudentRequest) {
             var student = new StudentDetails()
             {
                 Id = Guid.NewGuid(),
@@ -39,6 +41,63 @@ namespace crud.Controllers
             await _context.AddAsync(student);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        //route=> domain/student/edit/id
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            try
+            {
+                var student = await _context.StudentsDetails.FirstOrDefaultAsync(x => x.Id == id); //fetching student by id
+                if (student != null)
+                {
+                    var studentVM = new StudentViewModel()//passing data from model to view model
+                    {
+                        Id = student.Id,
+                        Name = student.Name,
+                        Faculty = student.Faculty,
+                        Email = student.Email,
+                        Address = student.Address
+                    };
+                    return View(studentVM);//passing student to edit view
+                }
+                else
+                {
+                    return Content($"Student not found of ID: {id}");//message if student not found of selected id
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(StudentViewModel vm)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var student = new StudentDetails() // passing viewmodel's data to model
+                    {
+                        Id = vm.Id,
+                        Name = vm.Name,
+                        Faculty = vm.Faculty,
+                        Email = vm.Email,
+                        Address = vm.Address,
+                    };
+                    _context.StudentsDetails.Update(student);//updaing student
+                    await _context.SaveChangesAsync(); //saving changes
+                    return RedirectToAction(nameof(Index)); // redirecting to index page after update successfully
+                }
+                return View(vm);//return view with viewmodel if state is not valid
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.Message);
+            }
         }
     }
 }
