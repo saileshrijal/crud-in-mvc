@@ -30,17 +30,23 @@ namespace crud.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Add(StudentViewModel addStudentRequest) {
-            var student = new StudentDetails()
+            try
             {
-                Id = Guid.NewGuid(),
-                Name = addStudentRequest.Name,
-                Faculty = addStudentRequest.Faculty,
-                Email = addStudentRequest.Email,
-                Address = addStudentRequest.Address,
-            };
-            await _context.AddAsync(student);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+                var student = new StudentDetails()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = addStudentRequest.Name,
+                    Faculty = addStudentRequest.Faculty,
+                    Email = addStudentRequest.Email,
+                    Address = addStudentRequest.Address,
+                };
+                await _context.AddAsync(student);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }catch(Exception ex)
+            {
+                return Content(ex.Message);
+            }
         }
 
         //route=> domain/student/edit/id
@@ -93,6 +99,27 @@ namespace crud.Controllers
                     return RedirectToAction(nameof(Index)); // redirecting to index page after update successfully
                 }
                 return View(vm);//return view with viewmodel if state is not valid
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.Message);
+            }
+        }
+      
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                var student = await _context.StudentsDetails.FirstOrDefaultAsync(x => x.Id == id);
+                if(student != null)
+                {
+                    _context.StudentsDetails.Remove(student);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+
+                return RedirectToAction(nameof(Index));
+
             }
             catch (Exception ex)
             {

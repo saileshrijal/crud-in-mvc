@@ -1,5 +1,6 @@
 ﻿using crud.Models;
 using Microsoft.EntityFrameworkCore;
+using crud.ViewModels;
 
 namespace crud.Data
 {
@@ -9,5 +10,6 @@ namespace crud.Data
         
         }
         public DbSet<StudentDetails>? StudentsDetails { get; set; } 
+        public DbSet<crud.ViewModels.StudentViewModel> StudentViewModel { get; set; }
     }
 }
