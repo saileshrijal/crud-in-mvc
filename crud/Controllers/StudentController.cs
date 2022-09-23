@@ -105,7 +105,8 @@ namespace crud.Controllers
                 return Content(ex.Message);
             }
         }
-      
+
+        [HttpPost]
         public async Task<IActionResult> Delete(Guid id)
         {
             try
