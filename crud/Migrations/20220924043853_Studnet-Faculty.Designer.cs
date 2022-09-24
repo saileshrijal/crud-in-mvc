@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using crud.Data;
 
@@ -11,9 +12,10 @@ using crud.Data;
 namespace crud.Migrations
 {
     [DbContext(typeof(StudentsDetailDbContext))]
-    partial class StudentsDetailDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220924043853_Studnet-Faculty")]
+    partial class StudnetFaculty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
