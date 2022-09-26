@@ -48,15 +48,28 @@ namespace crud.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Faculty")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("FacultyId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FacultyId");
+
                     b.ToTable("StudentsDetails");
+                });
+
+            modelBuilder.Entity("crud.Models.StudentDetails", b =>
+                {
+                    b.HasOne("crud.Models.FacultyDetails", "Faculty")
+                        .WithMany()
+                        .HasForeignKey("FacultyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Faculty");
                 });
 #pragma warning restore 612, 618
         }
