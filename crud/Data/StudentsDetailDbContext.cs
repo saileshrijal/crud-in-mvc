@@ -10,6 +10,6 @@ namespace crud.Data
         
         }
         public DbSet<StudentDetails>? StudentsDetails { get; set; } 
-        public DbSet<Faculty>? Faculty { get; set; }
+        public DbSet<FacultyDetails>? FacultyDetails { get; set; }
     }
 }

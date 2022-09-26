@@ -1,8 +1,8 @@
 ﻿namespace crud.Models
 {
-    public class Faculty
+    public class FacultyDetails
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string? FacultyName { get; set; }
     }
 }
