@@ -1,0 +1,46 @@
+﻿
+@model List<FacultyDetails>
+
+@*dynamically changing title of webapp*@
+@{
+    ViewData["Title"] = "List of Faculty";
+}
+<a asp-action="AddFaculty" class="btn btn-success">Add Faculty</a>
+<h2>List of Faculty</h2>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    FacultyName
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Id
+                    </td>
+                    <td>
+                        @item.FacultyName
+                    </td>
+                    <td>
+                        <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        @*Creating form to execute HTTPPOST Request*@
+                        <form asp-action="Delete" asp-route-id="@item.Id" class="d-inline">
+                            <input type="submit" class="btn btn-danger" value="Delete">
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,17 @@
+﻿@model crud.ViewModels.FacultyViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Add Faculty";
+}
+<h2>Add Faculty</h2>
+<hr></hr>
+<form method="post" action="AddFaculty">
+    <div class="mb-3">
+        <label for="" class="form-label">Faculty Name</label>
+        <input type="text" class="form-control" asp-for="FacultyName">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
