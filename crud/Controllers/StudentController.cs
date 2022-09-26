@@ -2,6 +2,7 @@
 using crud.Models;
 using crud.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace crud.Controllers
@@ -18,14 +19,23 @@ namespace crud.Controllers
         //route => domain/student/index or domain/student
         public IActionResult Index()
         {
-            var ListOfStudents = _context.StudentsDetails.ToList(); //getting lists of students from database
+            var ListOfStudents = _context.StudentsDetails.Include(x=>x.Faculty).ToList(); //getting lists of students from database
             return View(ListOfStudents); //passing lists of students to Student/Index view
         }
 
         [HttpGet]
         public IActionResult Add()
         {
-            return View();
+            var faculyList = _context.FacultyDetails.ToList();
+            var vm = new StudentViewModel
+            {
+                Faculties = faculyList.Select(x=>new SelectListItem()
+                {
+                    Text=x.FacultyName,
+                    Value=x.Id.ToString()
+                }).ToList()
+            };
+            return View(vm);
         }
 
         [HttpPost]
@@ -36,9 +46,9 @@ namespace crud.Controllers
                 {
                     Id = Guid.NewGuid(),
                     Name = addStudentRequest.Name,
-                    Faculty = addStudentRequest.Faculty,
                     Email = addStudentRequest.Email,
                     Address = addStudentRequest.Address,
+                    FacultyId = addStudentRequest.FacultyId.Value,
                 };
                 await _context.AddAsync(student);
                 await _context.SaveChangesAsync();
@@ -49,12 +59,14 @@ namespace crud.Controllers
             }
         }
 
+
         //route=> domain/student/edit/id
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
             try
             {
+                var faculyList = _context.FacultyDetails.ToList();
                 var student = await _context.StudentsDetails.FirstOrDefaultAsync(x => x.Id == id); //fetching student by id
                 if (student != null)
                 {
@@ -62,9 +74,14 @@ namespace crud.Controllers
                     {
                         Id = student.Id,
                         Name = student.Name,
-                        Faculty = student.Faculty,
                         Email = student.Email,
-                        Address = student.Address
+                        Address = student.Address,
+                        FacultyId = student.FacultyId,
+                        Faculties = faculyList.Select(x => new SelectListItem()
+                        {
+                            Text = x.FacultyName,
+                            Value = x.Id.ToString()
+                        }).ToList()
                     };
                     return View(studentVM);//passing student to edit view
                 }
@@ -90,9 +107,9 @@ namespace crud.Controllers
                     {
                         Id = vm.Id,
                         Name = vm.Name,
-                        Faculty = vm.Faculty,
                         Email = vm.Email,
                         Address = vm.Address,
+                        FacultyId = vm.FacultyId.Value
                     };
                     _context.StudentsDetails.Update(student);//updaing student
                     await _context.SaveChangesAsync(); //saving changes
@@ -112,7 +129,7 @@ namespace crud.Controllers
             try
             {
                 var student = await _context.StudentsDetails.FirstOrDefaultAsync(x => x.Id == id);
-                if(student != null)
+                if (student != null)
                 {
                     _context.StudentsDetails.Remove(student);
                     await _context.SaveChangesAsync();
@@ -128,6 +145,5 @@ namespace crud.Controllers
             }
         }
 
-        
     }
 }

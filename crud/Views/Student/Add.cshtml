@@ -13,7 +13,9 @@
     </div>
     <div class="mb-3">
         <label for="" class="form-label">Faculty</label>
-        <input type="text" class="form-control" asp-for="Faculty">
+        <select asp-for="FacultyId" asp-items="@Model.Faculties" class="form-control">
+            <option value="0" selected>--Select--Faculty--</option>
+        </select>
     </div>
     <div class="mb-3">
         <label for="" class="form-label">Email</label>
